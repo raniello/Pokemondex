@@ -9,7 +9,7 @@ namespace PokemonApi.Tests;
 
 public class PokemonBasicInfoServiceTest
 {
-    private static readonly PokemonInfo DefaultPokemonInfo = new()
+    private static readonly PokemonInfo TestPokemonInfo = new()
     {
         Name = "Test Pokemon",
         Description = "Description",
@@ -23,8 +23,7 @@ public class PokemonBasicInfoServiceTest
     public PokemonBasicInfoServiceTest()
     {
         var mock = new Mock<IPokemonInfoGateway>();
-        mock.Setup(m => m.GetAsync(It.IsAny<string>())).Returns(Task.FromResult<PokemonInfo?>(null));
-        mock.Setup(m => m.GetAsync(DefaultPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(DefaultPokemonInfo));
+        mock.Setup(m => m.GetAsync(TestPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(TestPokemonInfo));
         _pokemonInfoGateway = mock.Object;
         _sut = new PokemonBasicInfoService(_pokemonInfoGateway);
     }
@@ -32,9 +31,9 @@ public class PokemonBasicInfoServiceTest
     [Fact]
     public async Task SuccessfulBasicInformation()
     {
-        var response = await _sut.GetBasicInfoAsync(DefaultPokemonInfo.Name);
+        var response = await _sut.GetBasicInfoAsync(TestPokemonInfo.Name);
 
-        response.Should().Be(DefaultPokemonInfo);
+        response.Should().Be(TestPokemonInfo);
     }
 
  [Fact]
