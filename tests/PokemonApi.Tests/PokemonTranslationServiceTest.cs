@@ -72,12 +72,33 @@ public class PokemonTranslationServiceTest
 
         translatedInfo.Should().Be(LegendaryPokemonInfo with { Description = YodaTranslation });
     }
-    
+
     [Fact]
     public async Task SuccessfulYodaTranslationForCavePokemon()
     {
         var translatedInfo = await _sut.GetTranslatedInfoAsync(CavePokemonInfo.Name);
 
-        translatedInfo.Should().Be(CavePokemonInfo with { Description = YodaTranslation  });
+        translatedInfo.Should().Be(CavePokemonInfo with { Description = YodaTranslation });
+    }
+
+    [Fact]
+    public async Task EmptyTranslation()
+    {
+        Mock.Get(_translationGateway).Reset();
+
+        var translatedInfo = await _sut.GetTranslatedInfoAsync(DefaultPokemonInfo.Name);
+
+        translatedInfo.Should().Be(DefaultPokemonInfo);
+    }
+    
+    [Fact]
+    public async Task ExceptionInTranslation()
+    {
+        Mock.Get(_translationGateway).Reset();
+        Mock.Get(_translationGateway).Setup(f => f.TranslateAsync(It.IsAny<TranslationType>(), It.IsAny<string>())).ThrowsAsync(new Exception());
+
+        var translatedInfo = await _sut.GetTranslatedInfoAsync(DefaultPokemonInfo.Name);
+
+        translatedInfo.Should().Be(DefaultPokemonInfo);
     }
 }

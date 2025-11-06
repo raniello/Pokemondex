@@ -36,7 +36,7 @@ public class PokemonBasicInfoServiceTest
         response.Should().Be(TestPokemonInfo);
     }
 
- [Fact]
+    [Fact]
     public async Task NotFound()
     {
         var response = await _sut.GetBasicInfoAsync("NotExisting");

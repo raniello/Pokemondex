@@ -17,8 +17,24 @@ public class PokemonTranslationService(IPokemonInfoGateway pokemonInfoGateway, I
         {
             return null;
         }
+        try
+        {
+            return await ApplyTranslationAsync(basicInfo);
+        }
+        catch (Exception)
+        {
+            return basicInfo;
+        }
+    }
+
+    private async Task<PokemonInfo> ApplyTranslationAsync(PokemonInfo basicInfo)
+    {
         var translationType = basicInfo.IsLegendary || basicInfo.Habitat == "cave" ? TranslationType.Yoda : TranslationType.Shakespeare;
         var translatedDescription = await _translationGateway.TranslateAsync(translationType, basicInfo.Description);
+        if (string.IsNullOrWhiteSpace(translatedDescription))
+        {
+            return basicInfo;
+        }
         return basicInfo with { Description = translatedDescription };
     }
 
