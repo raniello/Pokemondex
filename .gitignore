@@ -1,0 +1,82 @@
+## Build output
+bin/
+obj/
+out/
+artifacts/
+
+## VS Code
+.vscode/
+.history/
+*.code-workspace
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio / VS Code local settings
+.vs/
+.idea/
+
+## Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.nunit.xml
+
+## Logs
+*.log
+logs/
+*.svclog
+
+## Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swn
+*.swo
+*.orig
+
+## NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+project.lock.json
+
+## Dotnet tools
+.dotnet-tools/
+
+## Generated files
+launchSettings.json
+appsettings.Development.json
+
+## OS-specific
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Linux
+*~
+.nfs*
+
+## Docker / container support (if used later)
+docker-compose.override.yml
+.env
+
+## Rider / JetBrains
+.idea/
+*.iml
