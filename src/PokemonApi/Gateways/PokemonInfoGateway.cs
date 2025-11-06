@@ -1,10 +1,11 @@
 using System;
 using System.Text.Json.Serialization;
 using PokemonApi.Core.Model;
+using PokemonApi.Core.Ports;
 
 namespace PokemonApi.Gateways;
 
-public class PokemonInfoGateway(string pockemonSpeciesUri)
+public class PokemonInfoGateway(string pockemonSpeciesUri): IPokemonInfoGateway
 {
     private readonly HttpClient _httpClient = new();
     private readonly Uri _pockemonSpeciesUri = new(pockemonSpeciesUri.TrimEnd('/') + "/");
@@ -14,7 +15,7 @@ public class PokemonInfoGateway(string pockemonSpeciesUri)
         var uri = new Uri(_pockemonSpeciesUri, pokemonName);
         var response = await _httpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
-        
+
         var dto = await response.Content.ReadFromJsonAsync<PockemonSpeciesDto>();
         return dto != null ? new PokemonInfo
         {
