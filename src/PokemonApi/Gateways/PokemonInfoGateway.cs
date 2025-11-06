@@ -5,10 +5,10 @@ using PokemonApi.Core.Ports;
 
 namespace PokemonApi.Gateways;
 
-public class PokemonInfoGateway(string pockemonSpeciesUri): IPokemonInfoGateway
+public class PokemonInfoGateway(PockemonSpeciesUri pockemonSpeciesUri) : IPokemonInfoGateway
 {
     private readonly HttpClient _httpClient = new();
-    private readonly Uri _pockemonSpeciesUri = new(pockemonSpeciesUri.TrimEnd('/') + "/");
+    private readonly Uri _pockemonSpeciesUri = new(pockemonSpeciesUri.Value.TrimEnd('/') + "/");
 
     public async Task<PokemonInfo?> GetAsync(string pokemonName)
     {
@@ -50,5 +50,13 @@ public class PokemonInfoGateway(string pockemonSpeciesUri): IPokemonInfoGateway
     {
         public required string Name { get; init; }
     }
+
+}
+
+public class PockemonSpeciesUri
+{
+    public required string Value { get; init; }
+
+        public static implicit operator PockemonSpeciesUri(string value) => new() { Value = value };
 
 }

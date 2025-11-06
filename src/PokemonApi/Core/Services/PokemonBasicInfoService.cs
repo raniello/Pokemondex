@@ -4,8 +4,7 @@ using PokemonApi.Core.Ports;
 
 namespace PokemonApi.Core.Services;
 
-
-public class PokemonBasicInfoService(IPokemonInfoGateway pokemonInfoGateway)
+public class PokemonBasicInfoService(IPokemonInfoGateway pokemonInfoGateway) : IPokemonBasicInfoService
 {
     private readonly IPokemonInfoGateway _pokemonInfoGateway = pokemonInfoGateway;
 

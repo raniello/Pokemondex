@@ -3,10 +3,10 @@ using PokemonApi.Core.Ports;
 
 namespace PokemonApi.Gateways;
 
-public class FunTranslationGateway(string funTranslationUri) : ITranslationGateway
+public class FunTranslationGateway(FunTranslationUri funTranslationUri) : ITranslationGateway
 {
     private readonly HttpClient _httpClient = new();
-    private readonly Uri _funTranslationUri = new(funTranslationUri.TrimEnd('/') + "/");
+    private readonly Uri _funTranslationUri = new(funTranslationUri.Value.TrimEnd('/') + "/");
     public async Task<string> TranslateAsync(TranslationType type, string text)
     {
         var uri = new Uri(_funTranslationUri, $"{type.ToString().ToLowerInvariant()}.json");
@@ -25,4 +25,11 @@ public class FunTranslationGateway(string funTranslationUri) : ITranslationGatew
     {
         public required string Translated { get; init; }
     }
+}
+
+public class FunTranslationUri
+{
+    public required string Value { get; init; }
+
+    public static implicit operator FunTranslationUri(string value) => new() { Value = value };
 }

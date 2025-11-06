@@ -4,8 +4,7 @@ using PokemonApi.Core.Ports;
 
 namespace PokemonApi.Core.Services;
 
-
-public class PokemonTranslationService(IPokemonInfoGateway pokemonInfoGateway, ITranslationGateway translationGateway)
+public class PokemonTranslationService(IPokemonInfoGateway pokemonInfoGateway, ITranslationGateway translationGateway) : IPokemonTranslationService
 {
     private readonly IPokemonInfoGateway _pokemonInfoGateway = pokemonInfoGateway;
     private readonly ITranslationGateway _translationGateway = translationGateway;
