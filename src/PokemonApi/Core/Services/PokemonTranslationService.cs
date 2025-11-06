@@ -17,7 +17,7 @@ public class PokemonTranslationService(IPokemonInfoGateway pokemonInfoGateway, I
         {
             return null;
         }
-        var translationType = basicInfo.IsLegendary? TranslationType.Yoda : TranslationType.Shakespeare;
+        var translationType = basicInfo.IsLegendary || basicInfo.Habitat == "cave" ? TranslationType.Yoda : TranslationType.Shakespeare;
         var translatedDescription = await _translationGateway.TranslateAsync(translationType, basicInfo.Description);
         return basicInfo with { Description = translatedDescription };
     }

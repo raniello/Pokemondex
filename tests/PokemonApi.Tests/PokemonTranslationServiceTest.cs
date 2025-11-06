@@ -25,6 +25,14 @@ public class PokemonTranslationServiceTest
         IsLegendary = true
     };
 
+    public static readonly PokemonInfo CavePokemonInfo = new()
+    {
+        Name = "Cave Pokemon",
+        Description = "Original Description",
+        Habitat = "cave",
+        IsLegendary = false
+    };
+
     const string YodaTranslation = "Yoda Translation";
     const string ShakespeareTranslation = "Shakespeare Translation";
     private readonly IPokemonInfoGateway _pokemonInfoGateway;
@@ -36,6 +44,7 @@ public class PokemonTranslationServiceTest
         var pokemonInfoGatewayMock = new Mock<IPokemonInfoGateway>();
         pokemonInfoGatewayMock.Setup(m => m.GetAsync(DefaultPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(DefaultPokemonInfo));
         pokemonInfoGatewayMock.Setup(m => m.GetAsync(LegendaryPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(LegendaryPokemonInfo));
+        pokemonInfoGatewayMock.Setup(m => m.GetAsync(CavePokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(CavePokemonInfo));
         _pokemonInfoGateway = pokemonInfoGatewayMock.Object;
 
         var translationGatewayMock = new Mock<ITranslationGateway>();
@@ -47,7 +56,6 @@ public class PokemonTranslationServiceTest
 
     }
 
-
     [Fact]
     public async Task SuccessfulShakeSpeareTranslation()
     {
@@ -55,13 +63,21 @@ public class PokemonTranslationServiceTest
 
         translatedInfo.Should().Be(DefaultPokemonInfo with { Description = ShakespeareTranslation });
     }
-    
-    
+
+
     [Fact]
-    public async Task SuccessfulYodaTranslation()
+    public async Task SuccessfulYodaTranslationForLegendaryPokemon()
     {
         var translatedInfo = await _sut.GetTranslatedInfoAsync(LegendaryPokemonInfo.Name);
 
-        translatedInfo.Should().Be(LegendaryPokemonInfo with { Description = YodaTranslation  });
+        translatedInfo.Should().Be(LegendaryPokemonInfo with { Description = YodaTranslation });
+    }
+    
+    [Fact]
+    public async Task SuccessfulYodaTranslationForCavePokemon()
+    {
+        var translatedInfo = await _sut.GetTranslatedInfoAsync(CavePokemonInfo.Name);
+
+        translatedInfo.Should().Be(CavePokemonInfo with { Description = YodaTranslation  });
     }
 }
