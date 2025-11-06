@@ -2,5 +2,16 @@
 
 GET {{PokemonApi_HostAddress}}/pokemon/ditto
 Accept: application/json
+###
 
+GET {{PokemonApi_HostAddress}}/pokemon/translated/ditto
+Accept: application/json
+###
+
+GET {{PokemonApi_HostAddress}}/pokemon/mewtwo
+Accept: application/json
+###
+
+GET {{PokemonApi_HostAddress}}/pokemon/translated/mewtwo
+Accept: application/json
 ###
