@@ -9,38 +9,59 @@ namespace PokemonApi.Tests;
 
 public class PokemonTranslationServiceTest
 {
-    private static readonly PokemonInfo TestPokemonInfo = new()
+    public static readonly PokemonInfo DefaultPokemonInfo = new()
     {
-        Name = "Test Pokemon",
-        Description = "Description",
-        Habitat = "test",
+        Name = "Default Pokemon",
+        Description = "Original Description",
+        Habitat = "urban",
         IsLegendary = false
     };
 
-    const string TranslatedDescription = "Translation";
+    public static readonly PokemonInfo LegendaryPokemonInfo = new()
+    {
+        Name = "Legendary Pokemon",
+        Description = "Original Description",
+        Habitat = "rare",
+        IsLegendary = true
+    };
 
+    const string YodaTranslation = "Yoda Translation";
+    const string ShakespeareTranslation = "Shakespeare Translation";
     private readonly IPokemonInfoGateway _pokemonInfoGateway;
     private readonly ITranslationGateway _translationGateway;
+    private readonly PokemonTranslationService _sut;
 
     public PokemonTranslationServiceTest()
     {
         var pokemonInfoGatewayMock = new Mock<IPokemonInfoGateway>();
-        pokemonInfoGatewayMock.Setup(m => m.GetAsync(TestPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(TestPokemonInfo));
+        pokemonInfoGatewayMock.Setup(m => m.GetAsync(DefaultPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(DefaultPokemonInfo));
+        pokemonInfoGatewayMock.Setup(m => m.GetAsync(LegendaryPokemonInfo.Name)).Returns(Task.FromResult<PokemonInfo?>(LegendaryPokemonInfo));
         _pokemonInfoGateway = pokemonInfoGatewayMock.Object;
 
         var translationGatewayMock = new Mock<ITranslationGateway>();
-        translationGatewayMock.Setup(m => m.TranslateAsync(It.IsAny<string>())).Returns(Task.FromResult(TranslatedDescription));
+        translationGatewayMock.Setup(m => m.TranslateAsync(TranslationType.Yoda, It.IsAny<string>())).Returns(Task.FromResult(YodaTranslation));
+        translationGatewayMock.Setup(m => m.TranslateAsync(TranslationType.Shakespeare, It.IsAny<string>())).Returns(Task.FromResult(ShakespeareTranslation));
         _translationGateway = translationGatewayMock.Object;
+
+        _sut = new PokemonTranslationService(_pokemonInfoGateway, _translationGateway);
+
     }
 
 
     [Fact]
-    public async Task SuccessfulTranslation()
+    public async Task SuccessfulShakeSpeareTranslation()
     {
-        var sut = new PokemonTranslationService(_pokemonInfoGateway, _translationGateway);
+        var translatedInfo = await _sut.GetTranslatedInfoAsync(DefaultPokemonInfo.Name);
 
-        var translatedInfo = await sut.GetTranslatedInfoAsync(TestPokemonInfo.Name);
+        translatedInfo.Should().Be(DefaultPokemonInfo with { Description = ShakespeareTranslation });
+    }
+    
+    
+    [Fact]
+    public async Task SuccessfulYodaTranslation()
+    {
+        var translatedInfo = await _sut.GetTranslatedInfoAsync(LegendaryPokemonInfo.Name);
 
-        translatedInfo.Should().Be(TestPokemonInfo with { Description = TranslatedDescription});
+        translatedInfo.Should().Be(LegendaryPokemonInfo with { Description = YodaTranslation  });
     }
 }

@@ -17,7 +17,8 @@ public class PokemonTranslationService(IPokemonInfoGateway pokemonInfoGateway, I
         {
             return null;
         }
-        var translatedDescription = await _translationGateway.TranslateAsync(basicInfo.Description);
+        var translationType = basicInfo.IsLegendary? TranslationType.Yoda : TranslationType.Shakespeare;
+        var translatedDescription = await _translationGateway.TranslateAsync(translationType, basicInfo.Description);
         return basicInfo with { Description = translatedDescription };
     }
 

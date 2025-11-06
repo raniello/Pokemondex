@@ -4,5 +4,11 @@ namespace PokemonApi.Core.Ports;
 
 public interface ITranslationGateway
 {
-    Task<string> TranslateAsync(string text);
+    public Task<string> TranslateAsync(TranslationType type, string text);
+}
+
+public enum TranslationType
+{
+    Yoda,
+    Shakespeare
 }
