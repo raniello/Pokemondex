@@ -71,8 +71,8 @@ The application follows the **Hexagonal Architecture** (Ports and Adapters) para
 
 ### Architecture Overview
 
-1. **Ports (Interfaces):** Define the core application logic contracts (e.g., `IPokemonInfoService`, `IPokemonTranslationService`).
-2. **Adapters (Implementations):** Implement the logic and handle interaction with external systems (e.g., `PokemonTranslationService` and the `Gateways` for API calls).
+1. **Ports (Interfaces):** Define the core application logic contracts (e.g., `IPokemonInfoService`, `IPokemonTranslationService` as inbound ports, `Gateways` as outbound ports).
+2. **Adapters (Implementations):** Implement the logic and handle interaction with external systems (e.g., `PokemonController` and the `Gateways` for API calls).
 
 ### Key Decisions
 
@@ -101,7 +101,7 @@ For a production environment, several critical improvements are necessary to ens
 | :--- | :--- | :--- |
 | **Logging** | Standard logging may lack the necessary context for debugging microservices. | Implement **Structured Logging** (e.g., JSON format). Log key metrics like external call latency, cache hit/miss ratio, and correlation IDs to trace requests across the system. |
 | **Monitoring** | Need to monitor the health and performance of the application and its dependencies. | **Export Metrics** (e.g., Prometheus/OpenTelemetry) to monitor the application's vital signs: external API error rates, latency percentiles, and resource usage. |
-| **Configuration** | Configuration values (API URLs, timeouts) are currently hardcoded or in configuration files. | Use **Environment Variables** for all configurable values (API URLs, Cache TTL, Redis connection strings) following the [Twelve-Factor App methodology](https://12factor.net/). |
+| **Configuration** | Configuration values (such as API URLs) are currently hardcoded or in configuration files. | Use **Environment Variables** for all configurable values (API URLs, Cache TTL, Redis connection strings) following the [Twelve-Factor App methodology](https://12factor.net/). |
 | **Rate Limiting (Self-Protection)** | The API needs protection from abuse and to protect upstream dependencies. | Implement **Our Own Rate Limiter** to control the request flow into our API. |
 
 ### Testing
